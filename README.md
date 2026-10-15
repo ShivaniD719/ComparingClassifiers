@@ -60,7 +60,7 @@ Result1:
 The results list is converted to json for better visualization of table as below.
                       Train Time	Train Accuracy	Test Accuracy
 Logistic Regression	    0.221538	  0.901366	      0.896941
-knn	                    0.096166	  0.995357      	0.839646
+knn	                    0.096166	  0.995357        0.839646
 svc	                    62.300643	  0.995357	      0.839646
 decisiontreeclassifier	0.521350	  0.995357	      0.839646
 
@@ -71,7 +71,7 @@ Result2:
         	            Train Time	Train Accuracy	Test Accuracy
 knn	                    13.784947	  0.914264	      0.891964
 logisticregression	    2.218304	  0.901366	      0.896941
-svc	                    106.285129  0.905432	      0.897062
+svc	                    106.285129    0.905432	      0.897062
 decisiontreeclassifier  3.454676	  0.995357	      0.837339
 
 Observation: Comparing Result1 and Result2, it looks Train time so way more with GridSearchCV, specially for knn and svc, however Test Accuracy improved by around 6% for knn, svc and decision tree.
@@ -81,7 +81,7 @@ Result3:
 	                        Train Time	Train Accuracy	Test Accuracy
 knn	                      13.382580	    0.909712	      0.892207
 logisticregression	      1.188823	    0.901396	      0.897427
-svc	                      1213.293585	  0.898209	      0.894756
+svc	                      1213.293585	0.898209	      0.894756
 decisiontreeclassifier	  2.944516	    0.904492	      0.896213
 
 Observation: The train time reduced with very small fraction for knn, logistic regression and decision tree classifiers while their test score remained almost same - it has very small (0.1%) improvement for knn and logistic regression) and it decreased by 0.3% for decision tree classifier.
@@ -100,7 +100,7 @@ Result5:
 knn and svc have higher train time and test score is not improving much for any model so I analyzed feature correlation to analyze feature selection. 
 5) For categorial features, I plotted distribution of each feature by target variable count using seaborn histplot. By looking at the target variable count distribution, it looks like each feature is distributed for each target value 0 and 1. 'day of week' column has very similar distribution across target variable y but it's not exactly same.
    
-6) For numerical features, I plotted correlation matrix to see their correlation score. From the plot, I see that cons.conf.idx(score =0.05), age(0.03) and campaign(0.07) have very low correlation score with target variable 'y'. However, this is linear correlation score so there is a possibility that combining them with other features might have different impact on target variable so not removing them right now. None of the features shows strong relationship with target in this plot.
+6) For numerical features, I plotted correlation matrix heatmap to see their correlation values. From the plot, I see that cons.conf.idx(score =0.05), age(0.03) and campaign(0.07) have very low correlation score with target variable 'y'. However, this is linear correlation value so there is a possibility that combining them with other features might have different impact on target variable so not removing them right now. None of the features shows strong relationship with target in this plot.
    
 7) As I didn't see strong correlation that can be removed, I tried different direction: encoding categorial features manually to numerical values using 'replace' on the dataframe columns - job, marital, education, day_of_week and month. I want to see if having all numerical values improve training time and test score.
 I ran correlation matrix on this new dataframe with all numerical columns and dropped the columns ('euribor3m', 'nr.employed', 'loan_unknown', 'poutcome_nonexistent', 'poutcome_success') that had score either >0.85 or <-0.85 to remove strongly correlated features from this matrix.
@@ -115,5 +115,13 @@ I ran correlation matrix on this new dataframe with all numerical columns and dr
    
 10) 
 #### findings
+The business problem is to predict whether the customer will subscribe to the campaign given the features in the dataset. This is classification problem and the intention is to compare the performance of 4 classifiers - k-nearest neighbors, logistic regression, decision trees, and support vector machines.
 
-Link to Jupiter Notebook: 
+From the analysis, the test score is improved after converting all categorial features to numerical features. This method reduces the number of columns and hence train time is also reduced. While comparing 4 models, if I used OneHotEncoder to convert categories into separate columns,  <> had best test score and <> had minimum train time of <> seconds and only <>% less test score compare to <>.
+If I converted all categorial columns to numerical columns, the train time is drastically reduced and best test score <> achieved with <> seconds.
+
+It's clear that models performed better with less number of columns - after converting categorial columns to numerical columns by replacing their text value to numerical representation in original column. With this approach, among all 4 classifiers, <> had best test score of <> and <> had best train time of <> seconds.
+
+If I were to continue this analysis, I would further try different hyperparameters (with 2nd approach of manually converting text to numerical value) and find the lowest point from the results. I would also try with removing features with least correlation value with target to further evaluate the impact on train time for svc specially and test score for all 4 classifiers. 
+
+Link to Jupiter Notebook: <add link>
