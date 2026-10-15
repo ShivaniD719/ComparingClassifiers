@@ -58,43 +58,60 @@ I checked the unique values for the non-numeric columns and from the unique valu
 ### Results
 Result1:
 The results list is converted to json for better visualization of table as below.
-                      Train Time	Train Accuracy	Test Accuracy
-Logistic Regression	    0.221538	  0.901366	      0.896941
-knn	                    0.096166	  0.995357        0.839646
-svc	                    62.300643	  0.995357	      0.839646
-decisiontreeclassifier	0.521350	  0.995357	      0.839646
+						Train Time	Train Accuracy	Test Accuracy
+Logistic Regression		0.211304		0.901366		0.896941
+knn						0.083048		0.914264		0.891964
+svc						63.920676		0.905432		0.897062
+decisiontreeclassifier	0.522538		0.995357		0.839160
+
 
 ### Improvement
 #### Hyperparameters tuning and GridSearchCV
 1) As first part of improvement, I tried running all 4 models with default parameters (except LogisticRegression with max iterations = 1000) along with GridSearchCV and results are as below.
 Result2:
-        	            Train Time	Train Accuracy	Test Accuracy
-knn	                    13.784947	  0.914264	      0.891964
-logisticregression	    2.218304	  0.901366	      0.896941
-svc	                    106.285129    0.905432	      0.897062
-decisiontreeclassifier  3.454676	  0.995357	      0.837339
+						Train Time	Train Accuracy	Test Accuracy
+knn						13.333790		0.914264		0.891964
+logisticregression		2.280318		0.901366		0.896941
+svc						112.481674		0.905432		0.897062
+decisiontreeclassifier	3.704357		0.995357		0.836611
+
 
 Observation: Comparing Result1 and Result2, it looks Train time so way more with GridSearchCV, specially for knn and svc, however Test Accuracy improved by around 6% for knn, svc and decision tree.
 
 2) To improve the test score and train time, I tried using GridSearchCV with tuning the models with different hyperparameters (knn__n_neighbors =7 -> default was 5, logisticregression__c: [0.1,10] -> default was 1, decisiontreeclassifier__max_length: [5,10] -> default was no max length restriction) and obtained the results as below:
 Result3:
-	                        Train Time	Train Accuracy	Test Accuracy
-knn	                      13.382580	    0.909712	      0.892207
-logisticregression	      1.188823	    0.901396	      0.897427
-svc	                      1213.293585	0.898209	      0.894756
-decisiontreeclassifier	  2.944516	    0.904492	      0.896213
+						Train Time	Train Accuracy	Test Accuracy
+knn							7.045616	0.909712		0.892207
+logisticregression			0.991209	0.901396		0.897427
+svc							1236.396984	0.898209		0.894756
+decisiontreeclassifier		2.213533	0.904492		0.896213
 
 Observation: The train time reduced with very small fraction for knn, logistic regression and decision tree classifiers while their test score remained almost same - it has very small (0.1%) improvement for knn and logistic regression) and it decreased by 0.3% for decision tree classifier.
 The train time drastically increased for svc even though accuracy decreased by 0.4%.
 
 3) As I see the Test Accuracy increasing with knn and decision tree, I tried different parameters for knn and decision tree as their train time are much less than svc as well.
-Updating knn__n_neighbors to 3, didnt improve Test Accuracy much.
+Updating knn__n_neighbors to 3.
 Result4:
-<add result>
+						Train Time	Train Accuracy	Test Accuracy
+knn						7.045616		0.909712		0.892207
+logisticregression		0.991209		0.901396		0.897427
+svc						1236.396984		0.898209		0.894756
+decisiontreeclassifier	2.213533		0.904492		0.896213
+knnWithNeighbor3		10.213827		0.924825		0.881160
+
+Observation: the train time is increased for knn and test accuracy is decreased.
 
 4) Decision Tree hyperparameters: I tried max_depth = 10, min_samples_leaf = 1 and min_samples_split = 2. The train time improved very well but the test score went down by 0.6%.
 Result5:
-<add result>
+							Train Time	Train Accuracy	Test Accuracy
+knn							7.045616	0.909712		0.892207
+logisticregression			0.991209	0.901396		0.897427
+svc							1236.396984	0.898209		0.894756
+decisiontreeclassifier		2.213533	0.904492		0.896213
+knnWithNeighbor3			10.213827	0.924825		0.881160
+decisiontree2				4.227974	0.917117		0.889779
+
+Observation: the train time is increased for decision tree and test accuracy is increased by 0.8%.
 
 #### Re analyzing features
 knn and svc have higher train time and test score is not improving much for any model so I analyzed feature correlation to analyze feature selection. 
@@ -103,17 +120,25 @@ knn and svc have higher train time and test score is not improving much for any 
 6) For numerical features, I plotted correlation matrix heatmap to see their correlation values. From the plot, I see that cons.conf.idx(score =0.05), age(0.03) and campaign(0.07) have very low correlation score with target variable 'y'. However, this is linear correlation value so there is a possibility that combining them with other features might have different impact on target variable so not removing them right now. None of the features shows strong relationship with target in this plot.
    
 7) As I didn't see strong correlation that can be removed, I tried different direction: encoding categorial features manually to numerical values using 'replace' on the dataframe columns - job, marital, education, day_of_week and month. I want to see if having all numerical values improve training time and test score.
-I ran correlation matrix on this new dataframe with all numerical columns and dropped the columns ('euribor3m', 'nr.employed', 'loan_unknown', 'poutcome_nonexistent', 'poutcome_success') that had score either >0.85 or <-0.85 to remove strongly correlated features from this matrix.
+I ran correlation matrix on this new dataframe with all numerical columns and dropped the columns ('euribor3m', 'nr.employed') that had score either >0.85 or <-0.85 to remove strongly correlated features from this matrix.
 
 8) I repeated the process again:
-   a) baseline model to compare scores with. Test score is now 0.8865
+   a) baseline model to compare scores with. Test score is now 0.8865. This is same as previous baseline score.
    b) Train all 4 classifiers with default parameters and without GridSearchCV:
    Result6:
+					   	Train Time	Train Accuracy	Test Accuracy
+logisticregression		2.214387		0.907284	0.907016
+knn						0.013394		0.925645	0.899733
+svc						7.982320		0.902640	0.901554
+decisiontreeclassifier	0.097944		1.000000	0.880311
 
-   c) Train all 4 classifiers with same parameters used before and with GridSearchCV:
-   Result7:
-   
-10) 
+Observation: Compare to Result1 (using OneHotEncode method), Result6 (manually converting categories from text to numbers within same column) show improvement in both time for most and test score for all.
+
+   c) As the decision tree classifier is showing better improvement in Test accuracy and Train decision tree classifier with different hyperparameters: max_depth: [5,10,15], min_samples_lead : [1,2,4], min_samples_split: [1,2].
+	Result7:
+
+	Observation: Compare to Result3 above
+
 #### findings
 The business problem is to predict whether the customer will subscribe to the campaign given the features in the dataset. This is classification problem and the intention is to compare the performance of 4 classifiers - k-nearest neighbors, logistic regression, decision trees, and support vector machines.
 
@@ -122,6 +147,8 @@ If I converted all categorial columns to numerical columns, the train time is dr
 
 It's clear that models performed better with less number of columns - after converting categorial columns to numerical columns by replacing their text value to numerical representation in original column. With this approach, among all 4 classifiers, <> had best test score of <> and <> had best train time of <> seconds.
 
-If I were to continue this analysis, I would further try different hyperparameters (with 2nd approach of manually converting text to numerical value) and find the lowest point from the results. I would also try with removing features with least correlation value with target to further evaluate the impact on train time for svc specially and test score for all 4 classifiers. 
+##### Recommendations
+If I were to continue this analysis, I would further explore decision tree classifier by analyzing feature_importances and removing some features to see if Test Accuracy improves. However, to keep in mind, features that can have lower importance for decision tree might have different weightage for different classifier.
+I would also explore more hyperparameter tuning for knn and logistic regression as their test score have improved as well.
 
 Link to Jupiter Notebook: <add link>
