@@ -59,10 +59,11 @@ I checked the unique values for the non-numeric columns and from the unique valu
 Result1:
 The results list is converted to json for better visualization of table as below.
 						Train Time	Train Accuracy	Test Accuracy
-Logistic Regression		0.211304		0.901366		0.896941
-knn						0.083048		0.914264		0.891964
-svc						63.920676		0.905432		0.897062
-decisiontreeclassifier	0.522538		0.995357		0.839160
+Logistic Regression		0.243534		0.901366	0.896941
+knn						0.096134		0.914264	0.891964
+svc						60.413542		0.905432	0.897062
+decisiontreeclassifier	0.545106		0.995357	0.837218
+
 
 
 ### Improvement
@@ -70,10 +71,11 @@ decisiontreeclassifier	0.522538		0.995357		0.839160
 1) As first part of improvement, I tried running all 4 models with default parameters (except LogisticRegression with max iterations = 1000) along with GridSearchCV and results are as below.
 Result2:
 						Train Time	Train Accuracy	Test Accuracy
-knn						13.333790		0.914264		0.891964
-logisticregression		2.280318		0.901366		0.896941
-svc						112.481674		0.905432		0.897062
-decisiontreeclassifier	3.704357		0.995357		0.836611
+knn						13.401536		0.914264	0.891964
+logisticregression		2.090203		0.901366	0.896941
+svc						107.465998		0.905432	0.897062
+decisiontreeclassifier	3.541690		0.995357	0.839767
+
 
 
 Observation: Comparing Result1 and Result2, it looks Train time so way more with GridSearchCV, specially for knn and svc, however Test Accuracy improved by around 6% for knn, svc and decision tree.
@@ -134,16 +136,33 @@ decisiontreeclassifier	0.097944		1.000000	0.880311
 
 Observation: Compare to Result1 (using OneHotEncode method), Result6 (manually converting categories from text to numbers within same column) show improvement in both time for most and test score for all.
 
-   c) As the decision tree classifier is showing better improvement in Test accuracy and Train decision tree classifier with different hyperparameters: max_depth: [5,10,15], min_samples_lead : [1,2,4], min_samples_split: [1,2].
-	Result7:
+   c) Train all 4 classifiers with different hyperparameters:
+   Result7:
+   						Train Time	Train Accuracy	Test Accuracy
+knn						0.805208		0.920759	0.901190
+logisticregression		2.851943		0.907436	0.906895
+svc						174.899349		0.905038	0.899733
+decisiontreeclassifier	0.154419		0.912868	0.911872
 
-	Observation: Compare to Result3 above
+	Observation: Compare to Result3, the Test accuracy is improved.
+	
+   d) As the decision tree classifier is showing better improvement in Test accuracy and Train time is very less, I tried decision tree classifier with different hyperparameters: max_depth: [5,10,15], min_samples_lead : [1,2,4], min_samples_split: [1,2].
+	Result8:
+							Train Time	Train Accuracy	Test Accuracy
+knn							0.805208		0.920759	0.901190
+logisticregression			2.851943		0.907436	0.906895
+svc							174.899349		0.905038	0.899733
+decisiontreeclassifier		0.154419		0.912868	0.911872
+decisiontree-bestfeatures	0.354049		0.912868	0.911872
+
+
+	Observation: Test Accuracy stayed the same for Decision tree.
 
 #### findings
 The business problem is to predict whether the customer will subscribe to the campaign given the features in the dataset. This is classification problem and the intention is to compare the performance of 4 classifiers - k-nearest neighbors, logistic regression, decision trees, and support vector machines.
 
-From the analysis, the test score is improved after converting all categorial features to numerical features. This method reduces the number of columns and hence train time is also reduced. While comparing 4 models, if I used OneHotEncoder to convert categories into separate columns,  <> had best test score and <> had minimum train time of <> seconds and only <>% less test score compare to <>.
-If I converted all categorial columns to numerical columns, the train time is drastically reduced and best test score <> achieved with <> seconds.
+From the analysis, the test score is improved after converting all categorial features to numerical features. This method reduces the number of columns and hence train time is also reduced. While comparing 4 models, if I used OneHotEncoder to convert categories into separate columns,  Logistic Regression had best test score of 89.94% and train time of 0.991209 seconds.
+If I converted all categorial columns to numerical columns, Decision Tree had the best train time of 0.154419 seconds and best test score of 91.18%.
 
 It's clear that models performed better with less number of columns - after converting categorial columns to numerical columns by replacing their text value to numerical representation in original column. With this approach, among all 4 classifiers, <> had best test score of <> and <> had best train time of <> seconds.
 
