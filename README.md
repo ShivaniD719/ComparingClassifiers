@@ -58,11 +58,12 @@ I checked the unique values for the non-numeric columns and from the unique valu
 ### Results
 Result1:
 The results list is converted to json for better visualization of table as below.
-						Train Time	Train Accuracy	Test Accuracy
-Logistic Regression		0.243534		0.901366	0.896941
-knn						0.096134		0.914264	0.891964
-svc						60.413542		0.905432	0.897062
-decisiontreeclassifier	0.545106		0.995357	0.837218
+	Train Time	Train Accuracy	Test Accuracy
+Logistic Regression	0.243534	0.901366	0.896941
+knn	0.096134	0.914264	0.891964
+svc	60.413542	0.905432	0.897062
+decisiontreeclassifier	0.545106	0.995357	0.837218![Uploading image.png…]()
+
 
 
 
