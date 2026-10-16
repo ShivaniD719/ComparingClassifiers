@@ -59,25 +59,22 @@ I checked the unique values for the non-numeric columns and from the unique valu
 Result1:
 The results list is converted to json for better visualization of table as below.
 | Model | Train Time (s) | Train Accuracy | Test Accuracy |
-| :--- | :--- | :--- | :--- |
-| **Logistic Regression** | 0.243534 | 0.901366 | 0.896941 |
-| **KNN** | 0.096134 | 0.914264 | 0.891964 |
-| **SVC** | 60.413542 | 0.905432 | 0.897062 |
-| **Decision Tree Classifier** | 0.545106 | 0.995357 | 0.837218 |
-
+| :--- | :---: | :---: | :---: |
+| Logistic Regression | 0.207447 | 0.901366 | 0.896941 |
+| KNN | 0.089821 | 0.914264 | 0.891964 |
+| SVC | 60.491481 | 0.905432 | 0.897062 |
+| Decision Tree Classifier | 0.513193 | 0.995357 | 0.836004 |
 
 ### Improvement
 #### Hyperparameters tuning and GridSearchCV
 1) As first part of improvement, I tried running all 4 models with default parameters (except LogisticRegression with max iterations = 1000) along with GridSearchCV and results are as below.
 Result2:
-
 | Model | Train Time (s) | Train Accuracy | Test Accuracy |
 | :--- | :---: | :---: | :---: |
-| **KNN** | 13.401536 | 0.914264 | 0.891964 |
-| **Logistic Regression** | 2.090203 | 0.901366 | 0.896941 |
-| **SVC** | 107.465998 | 0.905432 | 0.897062 |
-| **Decision Tree Classifier** | 3.541690 | 0.995357 | 0.839767 |
-
+| **KNN** | 10.54 | 91.43% | 89.20% |
+| **Logistic Regression** | 2.36 | 90.14% | 89.69% |
+| **SVC** | 104.15 | 90.54% | 89.71% |
+| **Decision Tree Classifier** | 3.18 | 99.54% | 83.84% |
 
 Observation: Comparing Result1 and Result2, it looks Train time so way more with GridSearchCV, specially for knn and svc, however Test Accuracy improved by around 6% for knn, svc and decision tree.
 
