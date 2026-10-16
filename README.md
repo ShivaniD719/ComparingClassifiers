@@ -181,4 +181,4 @@ At last, from the evaluation matrix of the last Decision Tree model implemented 
 If I were to continue this analysis, I would further explore decision tree classifier by analyzing feature_importances and removing some features to see if Test Accuracy improves. However, to keep in mind, features that can have lower importance for decision tree might have different weightage for different classifier.
 I would also explore more hyperparameter tuning for knn and logistic regression as their test score have improved as well.
 
-Link to Jupiter Notebook: <add link>
+Link to Jupiter Notebook: https://github.com/ShivaniD719/ComparingClassifiers/blob/main/CompareClassifiers.ipynb
