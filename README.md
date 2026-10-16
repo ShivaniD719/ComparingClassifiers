@@ -72,13 +72,12 @@ The results list is converted to json for better visualization of table as below
 #### Hyperparameters tuning and GridSearchCV
 1) As first part of improvement, I tried running all 4 models with default parameters (except LogisticRegression with max iterations = 1000) along with GridSearchCV and results are as below.
 Result2:
-						Train Time	Train Accuracy	Test Accuracy
-knn						13.401536		0.914264	0.891964
-logisticregression		2.090203		0.901366	0.896941
-svc						107.465998		0.905432	0.897062
-decisiontreeclassifier	3.541690		0.995357	0.839767
-
-
+| Model | Train Time (s) | Train Accuracy | Test Accuracy |
+| :--- | :---: | :---: | :---: |
+| **KNN** | 13.401536 | 0.914264 | 0.891964 |
+| **Logistic Regression** | 2.090203 | 0.901366 | 0.896941 |
+| **SVC** | 107.465998 | 0.905432 | 0.897062 |
+| **Decision Tree Classifier** | 3.541690 | 0.995357 | 0.839767 |
 
 Observation: Comparing Result1 and Result2, it looks Train time so way more with GridSearchCV, specially for knn and svc, however Test Accuracy improved by around 6% for knn, svc and decision tree.
 
